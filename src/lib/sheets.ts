@@ -18,6 +18,7 @@ export interface SheetBookingPayload {
 
 /**
  * Appends a booking row to the Google Sheet via Apps Script web app.
+ * Uses GET request to avoid CORS redirect issues with Apps Script POST endpoints.
  * Fails silently — booking is already confirmed, sheet write is best-effort.
  */
 export async function appendBookingToSheet(payload: SheetBookingPayload): Promise<void> {
@@ -27,11 +28,21 @@ export async function appendBookingToSheet(payload: SheetBookingPayload): Promis
   }
 
   try {
-    const res = await fetch(WEBHOOK_URL, {
-      method: "POST",
-      // Apps Script requires text/plain for doPost to receive postData.contents
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload),
+    // Use GET + query params — avoids CORS redirect issues that block POST from browsers
+    const params = new URLSearchParams({
+      action: "book",
+      id: payload.id,
+      name: payload.name,
+      phone: payload.phone,
+      service: payload.service,
+      date: payload.date,
+      slot: payload.slot,
+      childAge: payload.childAge ?? "—",
+      notes: payload.notes ?? "",
+    });
+
+    const res = await fetch(`${WEBHOOK_URL}?${params.toString()}`, {
+      method: "GET",
     });
 
     const json = await res.json();
@@ -39,7 +50,6 @@ export async function appendBookingToSheet(payload: SheetBookingPayload): Promis
       console.error("[sheets] Apps Script returned error:", json.error);
     }
   } catch (err) {
-    // Never block the booking confirmation if the sheet call fails
     console.error("[sheets] Failed to write to Google Sheet:", err);
   }
 }
