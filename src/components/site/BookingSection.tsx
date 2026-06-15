@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useT } from "@/lib/i18n";
 import { ALL_SLOTS, formatDateISO, formatSlot } from "@/lib/slots";
 import { getBookedSlots, createBooking } from "@/lib/booking.functions";
-import { appendBookingToSheet, getBookedSlotsFromSheet } from "@/lib/sheets";
 import { useServerFn } from "@tanstack/react-start";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -47,21 +46,9 @@ export function BookingSection() {
       return;
     }
     const iso = formatDateISO(date);
-    // Try Google Sheet first; fall back to in-memory server fn
-    const sheetsWebhook = import.meta.env.VITE_SHEETS_WEBHOOK;
-    if (sheetsWebhook) {
-      getBookedSlotsFromSheet(iso)
-        .then((slots) => setBooked(slots))
-        .catch(() =>
-          fetchBooked({ data: { date: iso } })
-            .then((r) => setBooked(r.booked))
-            .catch(() => setBooked([])),
-        );
-    } else {
-      fetchBooked({ data: { date: iso } })
-        .then((r) => setBooked(r.booked))
-        .catch(() => setBooked([]));
-    }
+    fetchBooked({ data: { date: iso } })
+      .then((r) => setBooked(r.booked))
+      .catch(() => setBooked([]));
   }, [date, fetchBooked]);
 
   const dateLabel = date
@@ -94,24 +81,18 @@ export function BookingSection() {
   const handlePay = async () => {
     if (!date || !slot) return;
     setLoading(true);
-    // Simulate payment processing
     await new Promise((r) => setTimeout(r, 1500));
     try {
       const res = await submit({
-        data: { name: name.trim(), phone, service: SERVICE, date: formatDateISO(date), slot },
+        data: {
+          name: name.trim(),
+          phone,
+          service: SERVICE,
+          date: formatDateISO(date),
+          slot,
+          childAge: childAge.trim(),
+        },
       });
-
-      // Write to Google Sheet in background — best-effort, never blocks confirmation
-      appendBookingToSheet({
-        id: res.id,
-        name: name.trim(),
-        phone,
-        service: SERVICE,
-        date: formatDateISO(date),
-        slot,
-        childAge: childAge.trim(),
-      });
-
       const search = {
         id: res.id,
         name: name.trim(),
