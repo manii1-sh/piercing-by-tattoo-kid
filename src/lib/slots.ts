@@ -1,3 +1,4 @@
+// Exactly 10 slots: 11:00 AM to 4:00 PM, 30 min each
 export const ALL_SLOTS = [
   "11:00",
   "11:30",
@@ -9,8 +10,6 @@ export const ALL_SLOTS = [
   "14:30",
   "15:00",
   "15:30",
-  "16:00",
-  "16:30",
 ];
 
 export const formatSlot = (s: string) => {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { Header } from "@/components/site/Header";
@@ -24,11 +25,18 @@ import {
   Star,
   ChevronRight,
 } from "lucide-react";
-import amala from "@/assets/AMALA-removebg-preview.png";
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
+import amala from "@/assets/AMALA-removebg-preview.webp";
+import baby1 from "@/assets/ChatGPT Image Jun 16, 2026, 12_53_53 PM.webp";
+import baby2 from "@/assets/ChatGPT Image Jun 16, 2026, 12_55_41 PM.webp";
+import baby3 from "@/assets/ChatGPT Image Jun 16, 2026, 12_57_27 PM.webp";
+import baby4 from "@/assets/ChatGPT Image Jun 16, 2026, 12_58_19 PM.webp";
+import baby5 from "@/assets/ChatGPT Image Jun 16, 2026, 01_01_02 PM.webp";
+import baby6 from "@/assets/baby2.webp";
+import baby7 from "@/assets/baby 3.webp";
+import baby8 from "@/assets/baby 6.webp";
+import baby9  from "@/assets/ChatGPT Image Jun 16, 2026, 01_50_44 PM.webp";
+import baby10 from "@/assets/ChatGPT Image Jun 16, 2026, 01_51_55 PM.webp";
+import baby11 from "@/assets/ChatGPT Image Jun 16, 2026, 01_52_56 PM.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -202,9 +210,13 @@ function Services() {
   const { t } = useT();
   const items = [
     { icon: Heart, name: t("babyEarPiercing"), desc: t("babyEarDesc"), price: "₹500" },
-    { icon: Sparkles, name: t("nosePiercing"), desc: t("nosePiercingDesc"), price: "₹600" },
-    { icon: ScissorsSquare, name: t("tattooAdults"), desc: t("tattooDesc"), price: "from ₹1500" },
-    { icon: BookOpen, name: t("aftercareGuide"), desc: t("aftercareDesc"), price: "Free" },
+    { icon: Sparkles, name: "Lobe Piercing", desc: "Classic ear lobe piercing with sterilized needles", price: "₹500" },
+    { icon: Smile, name: "Helix Piercing", desc: "Upper ear cartilage piercing", price: "₹600" },
+    { icon: Sparkles, name: "Nose Piercing", desc: t("nosePiercingDesc"), price: "₹500" },
+    { icon: User, name: "Septum Piercing", desc: "Nasal septum piercing with safe jewellery", price: "₹700" },
+    { icon: Star, name: "Eyebrow Piercing", desc: "Surface eyebrow piercing", price: "₹700" },
+    { icon: Heart, name: "Lip Piercing", desc: "Lip & labret piercing", price: "₹600" },
+    { icon: ChevronRight, name: "& More", desc: "Ask us about other body piercing options", price: "Call us" },
   ];
   return (
     <section id="services" className="bg-card/40 py-16 sm:py-24">
@@ -267,31 +279,90 @@ function WhyUs() {
 
 function Gallery() {
   const { t } = useT();
-  const imgs = [g1, g2, g3, g4, g1];
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const allImgs = [baby1, baby2, baby3, baby4, baby5, baby6, baby7, baby8, baby9, baby10, baby11];
+
+  const closeLightbox = () => setLightbox(null);
+  const prev = () => setLightbox((i) => (i != null ? (i - 1 + allImgs.length) % allImgs.length : null));
+  const next = () => setLightbox((i) => (i != null ? (i + 1) % allImgs.length : null));
+
+  // Double the array for seamless loop
+  const marqueeImgs = [...allImgs, ...allImgs];
+
   return (
-    <section id="gallery" className="bg-card/40 py-16 sm:py-24">
+    <section id="gallery" className="bg-card/40 py-16 sm:py-24 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4">
         <SectionHeading>{t("littleSmiles")}</SectionHeading>
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {imgs.map((src, i) => (
-            <div key={i} className="aspect-square overflow-hidden rounded-2xl bg-rose-soft">
+      </div>
+
+      {/* Marquee strip */}
+      <div
+        className="mt-10 flex gap-4 overflow-hidden"
+        style={{ cursor: "default" }}
+        onMouseEnter={(e) => {
+          const inner = e.currentTarget.querySelector<HTMLElement>(".marquee-inner");
+          if (inner) inner.style.animationPlayState = "paused";
+        }}
+        onMouseLeave={(e) => {
+          const inner = e.currentTarget.querySelector<HTMLElement>(".marquee-inner");
+          if (inner) inner.style.animationPlayState = "running";
+        }}
+      >
+        <div className="marquee-inner flex shrink-0 gap-4 animate-marquee">
+          {marqueeImgs.map((src, i) => (
+            <button
+              key={i}
+              onClick={() => setLightbox(i % allImgs.length)}
+              className="relative h-56 w-56 shrink-0 overflow-hidden rounded-2xl bg-rose-soft sm:h-64 sm:w-64"
+            >
               <img
                 src={src}
-                alt={`Gallery image ${i + 1}`}
+                alt={`Gallery ${(i % allImgs.length) + 1}`}
                 loading="lazy"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover transition-transform hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
               />
-            </div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 hover:bg-black/20">
+                <span className="text-2xl text-white opacity-0 transition-opacity hover:opacity-100">🔍</span>
+              </div>
+            </button>
           ))}
         </div>
-        <div className="mt-8 text-center">
-          <Button variant="outline" className="rounded-full border-border bg-card px-6">
-            {t("viewFullGallery")}
-          </Button>
-        </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); prev(); }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-xl text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          >‹</button>
+
+          <div className="relative max-h-[85vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={allImgs[lightbox]}
+              alt={`Gallery ${lightbox + 1}`}
+              className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
+            />
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white backdrop-blur-sm">
+              {lightbox + 1} / {allImgs.length}
+            </div>
+          </div>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); next(); }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-xl text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          >›</button>
+
+          <button
+            onClick={closeLightbox}
+            className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          >✕</button>
+        </div>
+      )}
     </section>
   );
 }
