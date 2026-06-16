@@ -12,9 +12,15 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { SectionHeading } from "./SectionHeading";
 
-const SERVICE = "Baby Ear Piercing";
+interface BookingSectionProps {
+  selectedService?: string;
+  setSelectedService?: (service: string) => void;
+}
 
-export function BookingSection() {
+export function BookingSection({
+  selectedService = "Baby Ear Piercing",
+  setSelectedService,
+}: BookingSectionProps) {
   const { t, lang } = useT();
   const navigate = useNavigate();
   const fetchBooked = useServerFn(getBookedSlots);
@@ -81,7 +87,7 @@ export function BookingSection() {
     if (!/^\d{10}$/.test(phone)) {
       toast.error("Please enter a valid 10-digit phone number"); return;
     }
-    if (!childAge.trim()) {
+    if (selectedService === "Baby Ear Piercing" && !childAge.trim()) {
       toast.error(t("fillChildAge")); return;
     }
     setStep(3);
@@ -97,10 +103,10 @@ export function BookingSection() {
         data: {
           name:     name.trim(),
           phone,
-          service:  SERVICE,
+          service:  selectedService,
           date:     formatDateISO(date),
           slot,
-          childAge: childAge.trim(),
+          childAge: selectedService === "Baby Ear Piercing" ? childAge.trim() : "—",
         },
       });
 
@@ -172,7 +178,54 @@ export function BookingSection() {
 
             {/* ── Step 1: Date + Slot ───────────────────────────────── */}
             {step === 1 && (
-              <div className="mt-6 grid gap-6 md:grid-cols-[auto_1fr]">
+              <div className="mt-6 space-y-6">
+                {/* Service Selector Dropdown */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="service-select" className="text-sm font-medium">{t("selectService")}</Label>
+                  <select
+                    id="service-select"
+                    value={selectedService}
+                    onChange={(e) => setSelectedService?.(e.target.value)}
+                    className="h-12 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary shadow-sm"
+                  >
+                    <optgroup label="Baby Special">
+                      <option value="Baby Ear Piercing">Baby Ear Piercing</option>
+                    </optgroup>
+                    <optgroup label="Ear Piercings">
+                      <option value="Lobe Piercing">Lobe Piercing</option>
+                      <option value="Tragus Piercing">Tragus Piercing</option>
+                      <option value="Conch Piercing">Conch Piercing</option>
+                      <option value="Daith Piercing">Daith Piercing</option>
+                      <option value="Rook Piercing">Rook Piercing</option>
+                      <option value="Helix Piercing">Helix Piercing</option>
+                      <option value="Vertical Helix">Vertical Helix</option>
+                      <option value="Industrial Piercing">Industrial Piercing</option>
+                      <option value="Flat Piercing">Flat Piercing</option>
+                      <option value="Forward Helix">Forward Helix</option>
+                      <option value="Mid Helix">Mid Helix</option>
+                      <option value="Snug Piercing">Snug Piercing</option>
+                    </optgroup>
+                    <optgroup label="Nose Piercings">
+                      <option value="Nostril Piercing">Nostril Piercing</option>
+                      <option value="Septum Piercing">Septum Piercing</option>
+                      <option value="Bridge Piercing">Bridge Piercing</option>
+                      <option value="Austin Bar">Austin Bar</option>
+                      <option value="Rhino Piercing">Rhino Piercing</option>
+                    </optgroup>
+                    <optgroup label="Facial & Oral">
+                      <option value="Eyebrow Piercing">Eyebrow Piercing</option>
+                      <option value="Lip Piercing">Lip Piercing</option>
+                      <option value="Smiley Piercing">Smiley Piercing</option>
+                      <option value="Tongue Piercing">Tongue Piercing</option>
+                      <option value="Cheek Piercing">Cheek Piercing</option>
+                    </optgroup>
+                    <optgroup label="Body Piercings">
+                      <option value="Belly Piercing">Belly Piercing</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-[auto_1fr]">
                 {/* Calendar */}
                 <div className="rounded-2xl border border-border bg-background p-2">
                   <Calendar
@@ -242,6 +295,7 @@ export function BookingSection() {
                   </div>
                 </div>
               </div>
+              </div>
             )}
 
             {/* ── Step 2: Customer Details ──────────────────────────── */}
@@ -274,17 +328,19 @@ export function BookingSection() {
                   <p className="text-xs text-muted-foreground">10-digit number without +91</p>
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="childAge">{t("childAge")}</Label>
-                  <Input
-                    id="childAge"
-                    value={childAge}
-                    onChange={(e) => setChildAge(e.target.value)}
-                    className="h-12 rounded-xl"
-                    placeholder={t("childAgePlaceholder")}
-                  />
-                  <p className="text-xs text-muted-foreground">{t("childAgeHint")}</p>
-                </div>
+                {selectedService === "Baby Ear Piercing" && (
+                  <div className="space-y-1.5">
+                    <Label htmlFor="childAge">{t("childAge")}</Label>
+                    <Input
+                      id="childAge"
+                      value={childAge}
+                      onChange={(e) => setChildAge(e.target.value)}
+                      className="h-12 rounded-xl"
+                      placeholder={t("childAgePlaceholder")}
+                    />
+                    <p className="text-xs text-muted-foreground">{t("childAgeHint")}</p>
+                  </div>
+                )}
               </div>
             )}
 
@@ -298,10 +354,10 @@ export function BookingSection() {
                   {[
                     [t("fullName"),    name],
                     [t("phoneNumber"), `+91 ${phone}`],
-                    [t("childAge"),    childAge],
+                    ...(selectedService === "Baby Ear Piercing" ? [[t("childAge"), childAge]] : []),
                     [t("date"),        dateLabel],
                     [t("time"),        slot ? formatSlot(slot) : "—"],
-                    [t("service"),     SERVICE],
+                    [t("service"),     selectedService],
                   ].map(([label, value]) => (
                     <li key={label} className="flex justify-between">
                       <span className="text-muted-foreground">{label}</span>
@@ -384,8 +440,14 @@ export function BookingSection() {
               </div>
               <div className="flex items-center justify-between">
                 <dt className="text-muted-foreground">{t("service")}</dt>
-                <dd className="font-medium">{SERVICE}</dd>
+                <dd className="font-medium">{selectedService}</dd>
               </div>
+              {selectedService === "Baby Ear Piercing" && childAge && (
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">{t("childAge")}</dt>
+                  <dd className="font-medium">{childAge}</dd>
+                </div>
+              )}
               <div className="my-3 border-t border-border" />
               <div className="flex items-center justify-between">
                 <dt>{t("advancePayable")}</dt>

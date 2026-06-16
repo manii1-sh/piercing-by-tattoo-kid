@@ -42,12 +42,13 @@ export function Header() {
   const { t, lang, setLang } = useT();
   const [open, setOpen] = useState(false);
   const nav = [
-    { id: "home", label: t("home") },
-    { id: "services", label: t("services") },
-    { id: "gallery", label: t("gallery") },
-    { id: "how", label: t("howItWorks") },
-    { id: "reviews", label: t("reviews") },
-    { id: "contact", label: t("contact") },
+    { id: "home", label: t("home"), to: "/", hash: "home" },
+    { id: "services", label: t("services"), to: "/services" },
+    { id: "guide", label: t("piercingGuide"), to: "/piercing-guide" },
+    { id: "gallery", label: t("gallery"), to: "/gallery" },
+    { id: "how", label: t("howItWorks"), to: "/how-it-works" },
+    { id: "reviews", label: t("reviews"), to: "/reviews" },
+    { id: "contact", label: t("contact"), to: "/contact" },
   ];
   return (
     <header className="sticky top-0 z-40 border-b border-border/40 bg-background/85 backdrop-blur-md">
@@ -57,22 +58,23 @@ export function Header() {
             <span className="font-display text-2xl text-primary">P</span>
           </div>
           <div className="min-w-0 leading-tight">
-            <div className="font-display text-lg sm:text-xl">Piercing by Tattoo Kid</div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <div className={`font-display ${lang === "ml" ? "text-base" : "text-lg sm:text-xl"}`}>Piercing by Tattoo Kid</div>
+            <div className={`text-[10px] uppercase tracking-[0.18em] text-muted-foreground ${lang === "ml" ? "hidden" : ""}`}>
               Piercing &amp; Tattoo Studio
             </div>
           </div>
         </Link>
 
-        <nav className="hidden items-center justify-center gap-7 text-sm lg:flex">
+        <nav className={`hidden items-center justify-center text-sm lg:flex ${lang === "ml" ? "gap-3 text-xs" : "gap-5"}`}>
           {nav.map((n) => (
-            <a
+            <Link
               key={n.id}
-              href={`#${n.id}`}
-              className="text-foreground/80 transition-colors hover:text-primary"
+              to={n.to}
+              hash={n.hash}
+              className="text-foreground/80 transition-colors hover:text-primary cursor-pointer font-medium whitespace-nowrap"
             >
               {n.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -80,29 +82,29 @@ export function Header() {
           <div className="hidden items-center rounded-full border border-border bg-card p-0.5 text-xs font-medium sm:flex">
             <button
               onClick={() => setLang("en")}
-              className={`w-10 rounded-full px-2.5 py-1 text-center ${lang === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+              className={`w-10 rounded-full px-2.5 py-1 text-center cursor-pointer ${lang === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
             >
               EN
             </button>
             <button
               onClick={() => setLang("ml")}
-              className={`w-[4.5rem] rounded-full px-2.5 py-1 text-center font-ml ${lang === "ml" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
+              className={`w-[4.5rem] rounded-full px-2.5 py-1 text-center font-ml cursor-pointer ${lang === "ml" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
             >
               മലയാളം
             </button>
           </div>
           <Button
             asChild
-            className="hidden h-11 rounded-full bg-primary px-5 text-primary-foreground hover:bg-primary/90 sm:inline-flex"
+            className="hidden h-11 rounded-full bg-primary px-5 text-primary-foreground hover:bg-primary/90 sm:inline-flex cursor-pointer font-semibold"
           >
-            <a href="#book">
+            <Link to="/" hash="book">
               <Calendar className="mr-2 h-4 w-4" />
               {t("bookNow")}
-            </a>
+            </Link>
           </Button>
           <button
             onClick={() => setOpen((o) => !o)}
-            className="grid h-11 w-11 place-items-center rounded-full border border-border lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-border lg:hidden cursor-pointer"
             aria-label="Menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -113,36 +115,38 @@ export function Header() {
         <div className="border-t border-border/40 bg-background lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
             {nav.map((n) => (
-              <a
+              <Link
                 key={n.id}
-                href={`#${n.id}`}
+                to={n.to}
+                hash={n.hash}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-3 text-base hover:bg-rose-soft"
+                className="rounded-lg px-3 py-3 text-base hover:bg-rose-soft cursor-pointer"
               >
                 {n.label}
-              </a>
+              </Link>
             ))}
             <div className="mt-2 flex items-center gap-2">
               <button
                 onClick={() => setLang("en")}
-                className={`flex-1 rounded-full px-3 py-2 text-sm ${lang === "en" ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}
+                className={`flex-1 rounded-full px-3 py-2 text-sm cursor-pointer ${lang === "en" ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}
               >
                 EN
               </button>
               <button
                 onClick={() => setLang("ml")}
-                className={`flex-1 rounded-full px-3 py-2 text-sm font-ml ${lang === "ml" ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}
+                className={`flex-1 rounded-full px-3 py-2 text-sm font-ml cursor-pointer ${lang === "ml" ? "bg-primary text-primary-foreground" : "bg-card border border-border"}`}
               >
                 മലയാളം
               </button>
             </div>
-            <a
-              href="#book"
+            <Link
+              to="/"
+              hash="book"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-primary px-4 py-3 text-center font-medium text-primary-foreground"
+              className="mt-2 rounded-full bg-primary px-4 py-3 text-center font-medium text-primary-foreground cursor-pointer"
             >
               {t("bookNow")}
-            </a>
+            </Link>
           </nav>
         </div>
       )}

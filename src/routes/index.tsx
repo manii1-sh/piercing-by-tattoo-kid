@@ -1,11 +1,17 @@
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { Header } from "@/components/site/Header";
 import { IntroVideoPopup } from "@/components/site/IntroVideoPopup";
 import { BookingSection } from "@/components/site/BookingSection";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { Footer } from "@/components/site/Footer";
+import earImg from "@/assets/ear_piercing_category.png";
+import noseImg from "@/assets/nose_piercing_category.png";
+import facialImg from "@/assets/facial_oral_category.png";
+import bodyImg from "@/assets/body_piercing_category.png";
 import {
   Calendar,
   Heart,
@@ -38,7 +44,12 @@ import baby9  from "@/assets/ChatGPT Image Jun 16, 2026, 01_50_44 PM.webp";
 import baby10 from "@/assets/ChatGPT Image Jun 16, 2026, 01_51_55 PM.webp";
 import baby11 from "@/assets/ChatGPT Image Jun 16, 2026, 01_52_56 PM.webp";
 
+const homeSearchSchema = z.object({
+  book: z.string().optional(),
+});
+
 export const Route = createFileRoute("/")({
+  validateSearch: homeSearchSchema,
   head: () => ({
     meta: [
       { title: "Piercing by Tattoo Kid — Safe Baby Piercing in Kerala" },
@@ -58,6 +69,22 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { book } = Route.useSearch();
+  const [selectedService, setSelectedService] = useState<string>("Baby Ear Piercing");
+
+  useEffect(() => {
+    if (book) {
+      setSelectedService(book);
+      const timer = setTimeout(() => {
+        const element = document.getElementById("book");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [book]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <IntroVideoPopup />
@@ -65,7 +92,7 @@ function Home() {
       <main>
         <Hero />
         <HowItWorks />
-        <BookingSection />
+        <BookingSection selectedService={selectedService} setSelectedService={setSelectedService} />
         <Services />
         <WhyUs />
         <Gallery />
@@ -111,8 +138,20 @@ function Hero() {
             {t("heroSubtitle")}
           </p>
 
+          {/* Policy Banner */}
+          <div className="mt-5 flex flex-col gap-1.5 text-[11px] font-semibold text-rose-700 bg-rose-50/50 border border-rose-100 rounded-2xl px-4 py-3 max-w-md shadow-sm">
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <span>TN Needle &amp; Cannula Piercing Only (No Gunshot)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <span>Titanium &amp; Surgical Steel Body-Safe Jewelry Only (No Gold)</span>
+            </div>
+          </div>
+
           {/* CTA buttons */}
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Button
               asChild
               className="h-12 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-md hover:bg-primary/90"
@@ -208,36 +247,88 @@ function HowItWorks() {
 
 function Services() {
   const { t } = useT();
-  const items = [
-    { icon: Heart, name: t("babyEarPiercing"), desc: t("babyEarDesc"), price: "₹500" },
-    { icon: Sparkles, name: "Lobe Piercing", desc: "Classic ear lobe piercing with sterilized needles", price: "₹500" },
-    { icon: Smile, name: "Helix Piercing", desc: "Upper ear cartilage piercing", price: "₹600" },
-    { icon: Sparkles, name: "Nose Piercing", desc: t("nosePiercingDesc"), price: "₹500" },
-    { icon: User, name: "Septum Piercing", desc: "Nasal septum piercing with safe jewellery", price: "₹700" },
-    { icon: Star, name: "Eyebrow Piercing", desc: "Surface eyebrow piercing", price: "₹700" },
-    { icon: Heart, name: "Lip Piercing", desc: "Lip & labret piercing", price: "₹600" },
-    { icon: ChevronRight, name: "& More", desc: "Ask us about other body piercing options", price: "Call us" },
+
+  const categories = [
+    {
+      id: "ear",
+      title: t("categoryEar"),
+      desc: "Lobe, Helix, Tragus, Conch, and more.",
+      img: earImg,
+      count: "13 options",
+    },
+    {
+      id: "nose",
+      title: t("categoryNose"),
+      desc: "Nostril, Septum, Bridge, Austin Bar, Rhino.",
+      img: noseImg,
+      count: "5 options",
+    },
+    {
+      id: "facialOral",
+      title: t("categoryFacialOral"),
+      desc: "Eyebrow, Lip, Smiley, Tongue, Cheek.",
+      img: facialImg,
+      count: "5 options",
+    },
+    {
+      id: "body",
+      title: t("categoryBody"),
+      desc: "Navel & Belly piercings.",
+      img: bodyImg,
+      count: "1 option",
+    },
   ];
+
   return (
-    <section id="services" className="bg-card/40 py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4">
-        <SectionHeading>{t("ourServices")}</SectionHeading>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((it) => (
-            <div
-              key={it.name}
-              className="group rounded-2xl bg-card p-6 shadow-[var(--shadow-card)] transition-transform hover:-translate-y-1"
+    <section id="services" className="relative overflow-hidden bg-card/40 py-16 sm:py-24">
+      {/* Background blurs */}
+      <div className="absolute -left-40 top-1/4 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+      <div className="absolute -right-40 bottom-1/4 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4">
+        <div className="text-center max-w-2xl mx-auto">
+          <SectionHeading>{t("ourServices")}</SectionHeading>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Explore our expert, sterile piercing procedures. Select a category below to view all styles, descriptions, and pricing options on our dedicated services page.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 grid-cols-2 lg:grid-cols-4">
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              to="/services"
+              search={{ category: cat.id }}
+              className="group relative flex h-72 sm:h-96 w-full flex-col justify-end overflow-hidden rounded-3xl border border-primary/5 bg-white shadow-md transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:border-primary/20 cursor-pointer"
             >
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-rose-soft text-primary">
-                <it.icon className="h-5 w-5" />
+              {/* Image Background */}
+              <div className="absolute inset-0 bg-black/15 z-10 transition-colors duration-300 group-hover:bg-black/10" />
+              <img
+                src={cat.img}
+                alt={cat.title}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 scale-105 group-hover:scale-100"
+              />
+
+              {/* Glassmorphic Overlay Content */}
+              <div className="relative z-20 m-3 sm:m-4 rounded-2xl bg-white/80 border border-white/50 backdrop-blur-md p-4 transition-colors duration-300 group-hover:bg-white/95">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-display text-lg sm:text-2xl font-bold text-ink leading-none">
+                    {cat.title}
+                  </h3>
+                  <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-bold text-primary">
+                    {cat.count}
+                  </span>
+                </div>
+                <p className="mt-1 text-[10px] text-muted-foreground leading-normal line-clamp-1 sm:line-clamp-none">
+                  {cat.desc}
+                </p>
+                <div className="mt-3 flex items-center justify-between text-xs font-semibold text-primary">
+                  <span className="text-[11px]">View Piercings</span>
+                  <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </div>
               </div>
-              <div className="mt-4 font-display text-xl">{it.name}</div>
-              <p className="mt-1 text-sm text-muted-foreground">{it.desc}</p>
-              <div className="mt-4 flex items-center justify-between border-t border-border pt-3 text-sm">
-                <span className="text-muted-foreground">{t("advancePayable")}</span>
-                <span className="font-semibold text-primary">{it.price}</span>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -468,110 +559,4 @@ function Contact() {
   );
 }
 
-function Footer() {
-  const { t } = useT();
-  return (
-    <footer className="border-t border-border bg-background py-10">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-primary/10">
-              <span className="font-display text-xl text-primary">P</span>
-            </div>
-            <span className="font-display text-lg">Piercing by Tattoo Kid</span>
-          </div>
-          <p className="mt-3 text-sm text-muted-foreground">{t("footerTagline")}</p>
-          <div className="mt-4 flex gap-3 text-primary">
-            <a href="#" className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft">
-              <Facebook className="h-4 w-4" />
-            </a>
-            <a href="#" className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft">
-              <Instagram className="h-4 w-4" />
-            </a>
-            <a
-              href="https://wa.me/919322520682"
-              target="_blank"
-              rel="noreferrer"
-              className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft"
-            >
-              <MessageCircle className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-        <div>
-          <div className="mb-3 text-sm font-semibold">{t("quickLinks")}</div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <a href="#home" className="hover:text-primary">
-                {t("home")}
-              </a>
-            </li>
-            <li>
-              <a href="#services" className="hover:text-primary">
-                {t("services")}
-              </a>
-            </li>
-            <li>
-              <a href="#gallery" className="hover:text-primary">
-                {t("gallery")}
-              </a>
-            </li>
-            <li>
-              <a href="#book" className="hover:text-primary">
-                {t("bookNow")}
-              </a>
-            </li>
-            <li>
-              <a href="#contact" className="hover:text-primary">
-                {t("contact")}
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="mb-3 text-sm font-semibold">{t("contactUs")}</div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="flex items-center gap-2">
-              <MapPin className="h-3.5 w-3.5 text-primary" />
-              {t("location")}
-            </li>
-            <li className="flex items-center gap-2">
-              <Phone className="h-3.5 w-3.5 text-primary" />
-              <a href="tel:+919322520682">+91 9322520682</a>
-            </li>
-            <li className="flex items-center gap-2">
-              <Mail className="h-3.5 w-3.5 text-primary" />
-              hello@piercingbytattookid.in
-            </li>
-            <li className="flex items-center gap-2">
-              <Clock className="h-3.5 w-3.5 text-primary" />
-              {t("hours")}
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="mb-3 text-sm font-semibold">{t("scanToBook")}</div>
-          <div className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
-            <div className="grid aspect-square place-items-center rounded-xl bg-rose-soft text-primary">
-              <Calendar className="h-10 w-10" />
-            </div>
-            <p className="mt-3 text-xs text-muted-foreground">{t("scanToBookFooter")}</p>
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-3 border-t border-border px-4 pt-5 text-xs text-muted-foreground">
-        <div>
-          © {new Date().getFullYear()} Piercing by Tattoo Kid. {t("rights")}
-        </div>
-        <div className="flex gap-4">
-          <a href="#" className="hover:text-primary">
-            {t("privacy")}
-          </a>
-          <a href="#" className="hover:text-primary">
-            {t("terms")}
-          </a>
-        </div>
-      </div>
-    </footer>
-  );
-}
+

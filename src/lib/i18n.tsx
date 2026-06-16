@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useMemo, useCallback, type ReactNode } from "react";
 
 export type Lang = "en" | "ml";
 
@@ -70,14 +70,26 @@ const en: Dict = {
   payAdvance: "Pay ₹200 Advance",
   processing: "Processing...",
   pickDateFirst: "Please pick a date and time first",
+  pickSlotFirst: "Please pick a time slot",
   fillDetails: "Please enter your name and a valid 10-digit phone",
   childAge: "Age of Child",
   childAgePlaceholder: "e.g. 6 months, 2 years",
   childAgeHint: "Enter your child's age (e.g. 3 months, 1 year)",
   fillChildAge: "Please enter your child's age",
+  reviewBooking: "Review Booking",
+  selectService: "Select Service",
+  categoryEar: "Ear Piercing",
+  categoryNose: "Nose Piercing",
+  categoryFacialOral: "Facial & Oral",
+  categoryBody: "Body Piercing",
+  piercingGuide: "Piercing Guide",
+  exploreGuide: "Interactive Placement Guide",
+  painScale: "Pain Level",
+  healingTime: "Healing Time",
+  jewelryType: "Recommended Jewelry",
   // services
   babyEarPiercing: "Baby Ear Piercing",
-  babyEarDesc: "Gentle gun & needle piercing with 24K gold studs",
+  babyEarDesc: "Safe TN needle & Cannula piercing using body-safe Titanium & Surgical Steel (strictly no gun/gold)",
   nosePiercing: "Nose Piercing",
   nosePiercingDesc: "Quick, hygienic nose piercing for all ages",
   tattooAdults: "Tattoo (Adults)",
@@ -185,13 +197,25 @@ const ml: Dict = {
   payAdvance: "₹200 അഡ്വാൻസ് അടയ്ക്കൂ",
   processing: "പ്രോസസ്സിംഗ്...",
   pickDateFirst: "ദയവായി ആദ്യം തീയതിയും സമയവും തിരഞ്ഞെടുക്കൂ",
+  pickSlotFirst: "ദയവായി ഒരു സമയ സ്ലോട്ട് തിരഞ്ഞെടുക്കൂ",
   fillDetails: "ദയവായി പേരും 10 അക്ക ഫോൺ നമ്പറും നൽകൂ",
   childAge: "കുട്ടിയുടെ പ്രായം",
   childAgePlaceholder: "ഉദാ: 6 മാസം, 2 വർഷം",
   childAgeHint: "കുട്ടിയുടെ പ്രായം നൽകൂ (ഉദാ: 3 മാസം, 1 വർഷം)",
   fillChildAge: "ദയവായി കുട്ടിയുടെ പ്രായം നൽകൂ",
+  reviewBooking: "ബുക്കിംഗ് അവലോകനം",
+  selectService: "സേവനം തിരഞ്ഞെടുക്കുക",
+  categoryEar: "കാത് പിയേഴ്സിംഗ്",
+  categoryNose: "മൂക്ക് പിയേഴ്സിംഗ്",
+  categoryFacialOral: "മുഖം & വായ",
+  categoryBody: "ശരീര പിയേഴ്സിംഗ്",
+  piercingGuide: "പിയേഴ്സിംഗ് ഗൈഡ്",
+  exploreGuide: "ഇന്ററാക്ടീവ് പ്ലേസ്മെന്റ് ഗൈഡ്",
+  painScale: "വേദനയുടെ തോത്",
+  healingTime: "സുഖപ്പെടുന്ന സമയം",
+  jewelryType: "ആഭരണങ്ങൾ",
   babyEarPiercing: "ബേബി ഇയർ പിയേഴ്സിംഗ്",
-  babyEarDesc: "24K സ്വർണ്ണ സ്റ്റഡുകൾ ഉപയോഗിച്ച് മൃദുവായ ഗൺ & നീഡിൽ പിയേഴ്സിംഗ്",
+  babyEarDesc: "ശരീരത്തിന് സുരക്ഷിതമായ ടൈറ്റാനിയം അല്ലെങ്കിൽ സർജിക്കൽ സ്റ്റീൽ ആഭരണങ്ങൾ ഉപയോഗിച്ച് സുരക്ഷിതമായ ടിഎൻ നീഡിൽ അല്ലെങ്കിൽ കാനുല പിയേഴ്സിംഗ് മാത്രം (ഗൺ ഷോട്ട് അല്ലെങ്കിൽ സ്വർണ്ണാഭരണങ്ങൾ ഉപയോഗിക്കാറില്ല)",
   nosePiercing: "നോസ് പിയേഴ്സിംഗ്",
   nosePiercingDesc: "എല്ലാ പ്രായക്കാർക്കും വേഗത്തിലുള്ള, ശുചിത്വമുള്ള നോസ് പിയേഴ്സിംഗ്",
   tattooAdults: "ടാറ്റൂ (മുതിർന്നവർ)",
@@ -244,16 +268,30 @@ const Ctx = createContext<I18nCtx>({ lang: "en", setLang: () => {}, t: (k) => k 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
   useEffect(() => {
-    const saved =
-      typeof window !== "undefined" ? (localStorage.getItem("lang") as Lang | null) : null;
-    if (saved === "en" || saved === "ml") setLangState(saved);
+    try {
+      const saved =
+        typeof window !== "undefined" ? (localStorage.getItem("lang") as Lang | null) : null;
+      console.log("I18nProvider: loaded saved lang =", saved);
+      if (saved === "en" || saved === "ml") setLangState(saved);
+    } catch (e) {
+      console.warn("I18nProvider: localStorage getItem failed", e);
+    }
   }, []);
-  const setLang = (l: Lang) => {
+  const setLang = useCallback((l: Lang) => {
+    console.log("I18nProvider: setLang called with =", l);
     setLangState(l);
-    if (typeof window !== "undefined") localStorage.setItem("lang", l);
-  };
-  const t = (k: keyof typeof en) => dicts[lang][k as string] ?? en[k as string] ?? (k as string);
-  return <Ctx.Provider value={{ lang, setLang, t }}>{children}</Ctx.Provider>;
+    try {
+      if (typeof window !== "undefined") localStorage.setItem("lang", l);
+    } catch (e) {
+      console.warn("I18nProvider: localStorage setItem failed", e);
+    }
+  }, []);
+  const t = useCallback((k: keyof typeof en) => dicts[lang][k as string] ?? en[k as string] ?? (k as string), [lang]);
+  
+  console.log("I18nProvider: rendering with lang =", lang);
+  
+  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
 export const useT = () => useContext(Ctx);
