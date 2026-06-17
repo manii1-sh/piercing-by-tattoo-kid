@@ -4,7 +4,7 @@ import { useT } from "@/lib/i18n";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { Star, MessageSquare, PenTool, CheckCircle, Sparkles } from "lucide-react";
+import { Star, Sparkles, Instagram } from "lucide-react";
 
 export const Route = createFileRoute("/reviews")({
   head: () => ({
@@ -18,103 +18,115 @@ export const Route = createFileRoute("/reviews")({
 
 interface Review {
   name: string;
-  text: string;
+  locationEn: string;
+  locationMl: string;
+  textEn: string;
+  textMl: string;
   stars: number;
-  date: string;
 }
 
 const defaultReviews: Review[] = [
   {
     name: "Anjali Menon",
-    text: "So gentle with my daughter. The studio is spotless and the staff knew exactly how to keep her calm.",
+    locationEn: "Thrissur",
+    locationMl: "തൃശ്ശൂർ",
+    textEn: "So gentle with my daughter. The studio is spotless and the staff knew exactly how to keep her calm.",
+    textMl: "എന്റെ മകളോട് വളരെ മൃദുവായി പെരുമാറി. സ്റ്റുഡിയോ വളരെ വൃത്തിയുള്ളതാണ്, കൂടാതെ അവളെ എങ്ങനെ ശാന്തയാക്കണമെന്ന് ജീവനക്കാർക്ക് കൃത്യമായി അറിയാമായിരുന്നു.",
     stars: 5,
-    date: "June 12, 2026",
   },
   {
     name: "Rahul Pillai",
-    text: "Booked online in 2 minutes. Got my son's ears pierced — quick, painless, and beautifully done.",
+    locationEn: "Ernakulam",
+    locationMl: "എറണാകുളം",
+    textEn: "Booked online in 2 minutes. Got my son's ears pierced — quick, painless, and beautifully done.",
+    textMl: "2 മിനിറ്റിനുള്ളിൽ ഓൺലൈനായി ബുക്ക് ചെയ്തു. എന്റെ മകന്റെ കാത് കുത്തിച്ചു — വേഗത്തിലും, വേദനയില്ലാതെയും, മനോഹരമായും ചെയ്തു.",
     stars: 5,
-    date: "June 08, 2026",
   },
   {
     name: "Lakshmi Nair",
-    text: "Trusted by our whole family. Hygiene and care here are unmatched in Kerala.",
+    locationEn: "Kozhikode",
+    locationMl: "കോഴിക്കോട്",
+    textEn: "Trusted by our whole family. Hygiene and care here are unmatched in Kerala.",
+    textMl: "ഞങ്ങളുടെ കുടുംബം മുഴുവൻ വിശ്വസിക്കുന്നു. ശുചിത്വവും പരിചരണവും കേരളത്തിൽ മറ്റെവിടെയും ലഭിക്കാത്തതാണ്.",
     stars: 5,
-    date: "May 29, 2026",
   },
   {
-    name: "Meera Krishnan",
-    text: "Extremely hygienic. They unpacked the sterilized needles right in front of us. Highly recommended!",
+    name: "Divya Krishnan",
+    locationEn: "Palakkad",
+    locationMl: "പാലക്കാട്",
+    textEn: "My baby didn't even cry! The artist was so experienced and caring. Highly recommended.",
+    textMl: "എന്റെ കുഞ്ഞ് കരഞ്ഞതേയില്ല! ആർട്ടിസ്റ്റ് വളരെ പരിചയസമ്പന്നനും കരുതലുള്ളവനുമായിരുന്നു. ശക്തമായി ശുപാർശ ചെയ്യുന്നു.",
     stars: 5,
-    date: "May 24, 2026",
   },
   {
-    name: "Deepak Raj",
-    text: "Very patient staff. My son was crying at first, but they calmed him down with toys and completed it painlessly.",
+    name: "Sreeja Thomas",
+    locationEn: "Kottayam",
+    locationMl: "കോട്ടയം",
+    textEn: "Online booking was super easy. Clean studio, friendly staff, and my baby's ears look adorable!",
+    textMl: "ഓൺലൈൻ ബുക്കിംഗ് വളരെ എളുപ്പമായിരുന്നു. വൃത്തിയുള്ള സ്റ്റുഡിയോ, സൗഹൃദപരമായ ജീവനക്കാർ, എന്റെ കുഞ്ഞിന്റെ കാതുകൾ കാണാൻ നല്ല ഭംഗിയുണ്ട്!",
     stars: 5,
-    date: "May 15, 2026",
+  },
+  {
+    name: "Priya Suresh",
+    locationEn: "Kannur",
+    locationMl: "കണ്ണൂർ",
+    textEn: "We came from 3 hours away and it was absolutely worth it. Professional, hygienic, and loving.",
+    textMl: "ഞങ്ങൾ 3 മണിക്കൂർ ദൂരെ നിന്നാണ് വന്നത്, അത് തികച്ചും സഫലമായി. പ്രൊഫഷണൽ, ശുചിത്വമുള്ള, സ്നേഹനിർഭരമായ സേവനം.",
+    stars: 5,
+  },
+  {
+    name: "Meera Gopinath",
+    locationEn: "Alappuzha",
+    locationMl: "ആലപ്പുഴ",
+    textEn: "The gold studs they use are of amazing quality. My baby's ears healed perfectly with zero issues.",
+    textMl: "അവർ ഉപയോഗിക്കുന്ന കാതുകുത്ത് സ്റ്റഡുകൾ മികച്ച ഗുണനിലവാരമുള്ളതാണ്. എന്റെ കുഞ്ഞിന്റെ കാതുകൾ യാതൊരു പ്രശ്നവുമില്ലാതെ തികച്ചും സുഖപ്പെട്ടു.",
+    stars: 5,
+  },
+  {
+    name: "Rini Varghese",
+    locationEn: "Thrissur",
+    locationMl: "തൃശ്ശൂർ",
+    textEn: "WhatsApp confirmation was instant. The whole process from booking to piercing was seamless.",
+    textMl: "വാട്ട്‌സ്ആപ്പ് സ്ഥിരീകരണം ഉടനടി ലഭിച്ചു. ബുക്കിംഗ് മുതൽ പിയേഴ്സിംഗ് വരെയുള്ള മുഴുവൻ പ്രക്രിയയും വളരെ എളുപ്പമായിരുന്നു.",
+    stars: 5,
   },
 ];
 
 function ReviewsPage() {
-  const { t } = useT();
-  const [reviews, setReviews] = useState<Review[]>(defaultReviews);
+  const { lang, t } = useT();
 
-  // Load reviews on mount (client-side only to avoid hydration mismatches)
-  useEffect(() => {
-    const saved = localStorage.getItem("site_reviews");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          // Sanitize items to ensure we don't render undefined/empty properties
-          const validReviews = parsed.filter(
-            (r) => r && typeof r.name === "string" && typeof r.text === "string"
-          );
-          setReviews(validReviews);
-        }
-      } catch (e) {
-        console.error("Failed to load reviews:", e);
-      }
-    } else {
-      localStorage.setItem("site_reviews", JSON.stringify(defaultReviews));
-    }
-  }, []);
+  // Row 1 = first 4, Row 2 = last 4 (doubled for seamless loop)
+  const row1 = [...defaultReviews.slice(0, 4), ...defaultReviews.slice(0, 4)];
+  const row2 = [...defaultReviews.slice(4),    ...defaultReviews.slice(4)];
 
-  // Form states
-  const [name, setName] = useState("");
-  const [text, setText] = useState("");
-  const [stars, setStars] = useState(5);
-  const [hoverStars, setHoverStars] = useState<number | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !text.trim()) return;
-
-    const newReview: Review = {
-      name: name.trim(),
-      text: text.trim(),
-      stars,
-      date: new Date().toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      }),
-    };
-
-    const updatedReviews = [newReview, ...reviews];
-    setReviews(updatedReviews);
-    localStorage.setItem("site_reviews", JSON.stringify(updatedReviews));
-
-    setName("");
-    setText("");
-    setStars(5);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-  };
-
-  const activeRating = hoverStars !== null ? hoverStars : stars;
+  const ReviewCard = ({ r }: { r: typeof defaultReviews[0] }) => (
+    <div className="w-72 shrink-0 rounded-2xl bg-card p-5 shadow-[var(--shadow-card)] border border-border/40 text-left">
+      {/* Stars */}
+      <div className="flex gap-0.5">
+        {Array.from({ length: r.stars }).map((_, i) => (
+          <Star key={i} className="h-3.5 w-3.5 fill-primary text-primary" />
+        ))}
+      </div>
+      {/* Text */}
+      <p className="mt-3 text-sm leading-relaxed text-foreground/75">
+        "{lang === "ml" ? r.textMl : r.textEn}"
+      </p>
+      {/* Author */}
+      <div className="mt-4 flex items-center gap-2.5">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-rose-soft text-sm font-bold text-primary">
+          {r.name[0]}
+        </div>
+        <div>
+          <div className="text-sm font-semibold">{r.name}</div>
+          <div className="text-xs text-muted-foreground">
+            {lang === "ml" ? r.locationMl : r.locationEn}, {lang === "ml" ? "കേരളം" : "Kerala"}
+          </div>
+        </div>
+        {/* Instagram badge */}
+        <div className="ml-auto grid h-7 w-7 place-items-center rounded-full bg-white shadow-sm text-pink-600"><Instagram className="h-4 w-4" /></div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -125,161 +137,75 @@ function ReviewsPage() {
         <div className="absolute -left-40 top-1/4 h-[500px] w-[500px] rounded-full bg-primary/5 blur-3xl pointer-events-none animate-pulse duration-[8000ms]" />
         <div className="absolute -right-40 bottom-1/4 h-[500px] w-[500px] rounded-full bg-primary/8 blur-3xl pointer-events-none animate-pulse duration-[10000ms]" />
 
-        <div className="relative z-10 mx-auto max-w-6xl px-4">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 text-center">
           
           {/* Header */}
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-primary shadow-sm">
               <Sparkles className="h-3.5 w-3.5 text-primary" /> {t("parentReviews")}
             </span>
             <h1 className="mt-4 font-display text-4xl sm:text-6xl text-ink">
-              What Parents <span className="italic text-primary">Are Saying</span>
+              {lang === "ml" ? (
+                t("reviewsTitle")
+              ) : (
+                <>
+                  What Parents <span className="italic text-primary">Are Saying</span>
+                </>
+              )}
             </h1>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              We prioritize safety, comfort, and memories. Read genuine reviews from parents and clients who visited our studio in Kerala.
+              {t("reviewsSubtitle")}
             </p>
           </div>
+        </div>
 
-          <div className="mt-16 grid gap-12 lg:grid-cols-[1.5fr_1fr] items-start">
-            
-            {/* ── LEFT COLUMN: Reviews list ── */}
-            <div className="space-y-6">
-              {reviews.map((r, i) => (
-                <div
-                  key={i}
-                  className="rounded-3xl bg-white/60 border border-primary/5 backdrop-blur-md p-6 shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
-                >
-                  <div className="flex items-center justify-between">
-                    {/* Stars */}
-                    <div className="flex gap-1 text-primary">
-                      {Array.from({ length: 5 }).map((_, starIndex) => (
-                        <Star
-                          key={starIndex}
-                          className={`h-4 w-4 ${
-                            starIndex < r.stars ? "text-primary" : "text-muted-foreground/20"
-                          }`}
-                          fill={starIndex < r.stars ? "currentColor" : "none"}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-[10px] text-muted-foreground font-semibold uppercase">
-                      {r.date || "Just Now"}
-                    </span>
-                  </div>
-
-                  <p className="mt-4 text-sm leading-relaxed text-foreground/80 italic">
-                    "{r.text}"
-                  </p>
-
-                  <div className="mt-5 flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-2xl bg-rose-soft text-sm font-bold text-primary shadow-inner select-none">
-                      {r.name ? r.name.charAt(0).toUpperCase() : "?"}
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-ink">{r.name || "Anonymous"}</div>
-                      <div className="text-[10px] text-muted-foreground">Verified Client</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        {/* Marquee list */}
+        <div className="mt-12 overflow-hidden">
+          {/* Row 1 — scrolls left */}
+          <div
+            className="flex gap-4"
+            onMouseEnter={(e) => {
+              const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r1");
+              if (el) el.style.animationPlayState = "paused";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r1");
+              if (el) el.style.animationPlayState = "running";
+            }}
+          >
+            <div className="marquee-r1 flex shrink-0 gap-4 animate-marquee">
+              {row1.map((r, i) => <ReviewCard key={i} r={r} />)}
             </div>
-
-            {/* ── RIGHT COLUMN: Write review form ── */}
-            <div className="sticky top-24">
-              <div className="rounded-[32px] bg-white border border-primary/10 p-6 sm:p-8 shadow-xl flex flex-col gap-6">
-                <div className="flex items-center gap-2.5">
-                  <PenTool className="h-5 w-5 text-primary" />
-                  <h3 className="font-display text-2xl font-bold text-ink">
-                    Share Your Story
-                  </h3>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Your feedback helps other parents make safe choices. Share details about the pain level, cleanliness, and overall experience!
-                </p>
-
-                {submitted && (
-                  <div className="flex items-center gap-3 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-800 text-xs">
-                    <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" />
-                    <div>
-                      <span className="font-bold">Thank you!</span> Your review has been added to the list successfully.
-                    </div>
-                  </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Rating Selector */}
-                  <div className="space-y-2">
-                    <label className="text-xs font-semibold text-muted-foreground block">Rating</label>
-                    <div className="flex gap-2">
-                      {Array.from({ length: 5 }).map((_, i) => {
-                        const val = i + 1;
-                        return (
-                          <button
-                            type="button"
-                            key={val}
-                            onClick={() => setStars(val)}
-                            onMouseEnter={() => setHoverStars(val)}
-                            onMouseLeave={() => setHoverStars(null)}
-                            className="p-1 cursor-pointer transition-transform hover:scale-110 focus:outline-none"
-                            aria-label={`Rate ${val} stars`}
-                          >
-                            <Star
-                              className={`h-6 w-6 transition-colors duration-150 ${
-                                val <= activeRating ? "text-primary" : "text-muted-foreground/30"
-                              }`}
-                              fill={val <= activeRating ? "currentColor" : "none"}
-                            />
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Name Input */}
-                  <div className="space-y-1">
-                    <label htmlFor="name" className="text-xs font-semibold text-muted-foreground">
-                      Full Name
-                    </label>
-                    <input
-                      id="name"
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Meera S."
-                      className="w-full h-11 px-4 text-sm rounded-2xl border border-border bg-background/50 focus:outline-none focus:border-primary focus:bg-background transition-all"
-                    />
-                  </div>
-
-                  {/* Comment Input */}
-                  <div className="space-y-1">
-                    <label htmlFor="comment" className="text-xs font-semibold text-muted-foreground">
-                      Your Review
-                    </label>
-                    <textarea
-                      id="comment"
-                      required
-                      rows={4}
-                      value={text}
-                      onChange={(e) => setText(e.target.value)}
-                      placeholder="How did the appointment go? Was it gentle and quick?"
-                      className="w-full p-4 text-sm rounded-2xl border border-border bg-background/50 focus:outline-none focus:border-primary focus:bg-background transition-all resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full h-12 flex items-center justify-center gap-2 rounded-full bg-primary text-sm font-bold text-white shadow-md transition-all hover:bg-primary/95 active:scale-[0.98] cursor-pointer"
-                  >
-                    <MessageSquare className="h-4 w-4" />
-                    <span>Submit Review</span>
-                  </button>
-                </form>
-              </div>
-            </div>
-
           </div>
 
+          {/* Row 2 — scrolls right */}
+          <div
+            className="mt-4 flex gap-4"
+            onMouseEnter={(e) => {
+              const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r2");
+              if (el) el.style.animationPlayState = "paused";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r2");
+              if (el) el.style.animationPlayState = "running";
+            }}
+          >
+            <div className="marquee-r2 flex shrink-0 gap-4 animate-marquee-reverse">
+              {row2.map((r, i) => <ReviewCard key={i} r={r} />)}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="https://www.instagram.com/piercings_by_tattoo_kid?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-6 py-2.5 text-sm font-medium shadow-sm hover:bg-rose-soft transition-colors text-pink-600 hover:text-pink-700"
+          >
+            <Instagram className="h-4 w-4 shrink-0 text-pink-600" />
+            {t("followInstagram")}
+          </a>
         </div>
       </main>
 

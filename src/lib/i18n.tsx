@@ -113,10 +113,22 @@ const en: Dict = {
   viewFullGallery: "View Full Gallery",
   // reviews
   parentReviews: "What Parents Say",
+  reviewsTitle: "What Parents Are Saying",
+  reviewsSubtitle: "We prioritize safety, comfort, and memories. Read genuine reviews from parents and clients who visited our studio in Kerala.",
+  verifiedClient: "Verified Client",
+  shareYourStory: "Share Your Story",
+  shareYourStoryDesc: "Your feedback helps other parents make safe choices. Share details about the pain level, cleanliness, and overall experience!",
+  thankYouReview: "Thank you!",
+  reviewAddedSuccess: "Your review has been added to the list successfully.",
+  ratingLabel: "Rating",
+  yourReview: "Your Review",
+  reviewPlaceholder: "How did the appointment go? Was it gentle and quick?",
+  submitReviewButton: "Submit Review",
+  followInstagram: "Follow us on Instagram",
   // contact
   contactUs: "Contact Us",
   contactSubtitle: "We're here to help. Reach out anytime.",
-  hours: "Mon – Sun : 10:00 AM – 7:00 PM",
+  hours: "Mon – Sat : 11:00 AM – 4:00 PM",
   // footer
   footerTagline: "We create safe, beautiful & memorable experiences for your little ones.",
   quickLinks: "Quick Links",
@@ -236,6 +248,18 @@ const ml: Dict = {
   littleSmiles: "ചെറിയ പുഞ്ചിരികൾ, മനോഹരമായ ഓർമ്മകൾ",
   viewFullGallery: "മുഴുവൻ ഗ്യാലറി കാണൂ",
   parentReviews: "മാതാപിതാക്കൾ പറയുന്നത്",
+  reviewsTitle: "മാതാപിതാക്കൾ പറയുന്നത്",
+  reviewsSubtitle: "സുരക്ഷിതത്വം, സുഖസൗകര്യങ്ങൾ, മനോഹരമായ ഓർമ്മകൾ എന്നിവയ്ക്കാണ് ഞങ്ങൾ മുൻഗണന നൽകുന്നത്. കേരളത്തിലെ ഞങ്ങളുടെ സ്റ്റുഡിയോ സന്ദർശിച്ച മാതാപിതാക്കളുടെയും ഉപഭോക്താക്കളുടെയും യഥാർത്ഥ അവലോകനങ്ങൾ വായിക്കൂ.",
+  verifiedClient: "സ്ഥിരീകരിച്ച ഉപഭോക്താവ്",
+  shareYourStory: "നിങ്ങളുടെ അനുഭവം പങ്കുവെക്കൂ",
+  shareYourStoryDesc: "നിങ്ങളുടെ ഫീഡ്‌ബാക്ക് മറ്റ് മാതാപിതാക്കൾക്ക് സുരക്ഷിതമായ തിരഞ്ഞെടുപ്പുകൾ നടത്താൻ സഹായിക്കുന്നു. വേദനയുടെ തോത്, വൃത്തി, മൊത്തത്തിലുള്ള അനുഭവം എന്നിവയെക്കുറിച്ചുള്ള വിശദാംശങ്ങൾ പങ്കുവെക്കൂ!",
+  thankYouReview: "നന്ദി!",
+  reviewAddedSuccess: "നിങ്ങളുടെ അവലോകനം വിജയകരമായി ലിസ്റ്റിലേക്ക് ചേർത്തു.",
+  ratingLabel: "റേറ്റിംഗ്",
+  yourReview: "നിങ്ങളുടെ അവലോകനം",
+  reviewPlaceholder: "അപ്പോയിന്റ്മെന്റ് എങ്ങനെയുണ്ടായിരുന്നു? പിയേഴ്സിംഗ് സുഗമവും വേഗത്തിലുമായിരുന്നോ?",
+  submitReviewButton: "അവലോകനം സമർപ്പിക്കുക",
+  followInstagram: "ഇൻസ്റ്റാഗ്രാമിൽ ഞങ്ങളെ ഫോളോ ചെയ്യൂ",
   contactUs: "ഞങ്ങളെ ബന്ധപ്പെടുക",
   contactSubtitle: "ഞങ്ങൾ സഹായിക്കാൻ ഇവിടെയുണ്ട്. എപ്പോൾ വേണമെങ്കിലും ബന്ധപ്പെടൂ.",
   hours: "തിങ്കൾ – ഞായർ : രാവിലെ 10:00 – വൈകുന്നേരം 7:00",
@@ -263,7 +287,7 @@ interface I18nCtx {
   setLang: (l: Lang) => void;
   t: (k: keyof typeof en) => string;
 }
-const Ctx = createContext<I18nCtx>({ lang: "en", setLang: () => {}, t: (k) => k as string });
+const Ctx = createContext<I18nCtx>({ lang: "en", setLang: () => { }, t: (k) => k as string });
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
@@ -287,9 +311,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   }, []);
   const t = useCallback((k: keyof typeof en) => dicts[lang][k as string] ?? en[k as string] ?? (k as string), [lang]);
-  
+
   console.log("I18nProvider: rendering with lang =", lang);
-  
+
   const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

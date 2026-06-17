@@ -16,17 +16,30 @@ export function Footer() {
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{t("footerTagline")}</p>
           <div className="mt-4 flex gap-3 text-primary">
-            <a href="#" className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft">
+            <a
+              href="https://www.facebook.com/Piercingsbytattookids/?ref=PROFILE_EDIT_xav_ig_profile_page_web#"
+              target="_blank"
+              rel="noreferrer"
+              className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft hover:bg-primary/10 transition-colors"
+              aria-label="Facebook Page"
+            >
               <Facebook className="h-4 w-4" />
             </a>
-            <a href="#" className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft">
+            <a
+              href="https://www.instagram.com/piercings_by_tattoo_kid?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              target="_blank"
+              rel="noreferrer"
+              className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft hover:bg-primary/10 transition-colors"
+              aria-label="Instagram Profile"
+            >
               <Instagram className="h-4 w-4" />
             </a>
             <a
               href="https://wa.me/919322520682"
               target="_blank"
               rel="noreferrer"
-              className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft"
+              className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft hover:bg-primary/10 transition-colors"
+              aria-label="WhatsApp Contact"
             >
               <MessageCircle className="h-4 w-4" />
             </a>

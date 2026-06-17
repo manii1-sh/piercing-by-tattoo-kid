@@ -107,7 +107,7 @@ function Home() {
 function Hero() {
   const { t } = useT();
   const trust = [
-    { icon: ShieldCheck, label: t("safeHygienic") },
+    { icon: ShieldCheck, label: "99.99% Pain Free" },
     { icon: Sparkles, label: t("sterilizedEquipment") },
     { icon: User, label: t("expertSpecialists") },
     { icon: Heart, label: t("lovedByParents") },
@@ -138,16 +138,15 @@ function Hero() {
             {t("heroSubtitle")}
           </p>
 
-          {/* Policy Banner */}
-          <div className="mt-5 flex flex-col gap-1.5 text-[11px] font-semibold text-rose-700 bg-rose-50/50 border border-rose-100 rounded-2xl px-4 py-3 max-w-md shadow-sm">
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500" />
-              <span>TN Needle &amp; Cannula Piercing Only (No Gunshot)</span>
+          {/* ── 99.99% Pain Free tagline banner ── */}
+          <div className="mt-5 flex w-fit items-center gap-3 rounded-2xl bg-primary px-5 py-3 shadow-[0_6px_20px_rgba(236,106,133,0.35)]">
+            <span className="font-display text-2xl font-bold text-white leading-none">99.99%</span>
+            <div className="h-8 w-px bg-white/30" />
+            <div className="leading-tight">
+              <div className="text-xs font-bold uppercase tracking-widest text-white/80">Pain Free</div>
+              <div className="text-sm font-semibold text-white">Piercing Guaranteed</div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500" />
-              <span>Titanium &amp; Surgical Steel Body-Safe Jewelry Only (No Gold)</span>
-            </div>
+            <span className="text-xl">✨</span>
           </div>
 
           {/* CTA buttons */}
@@ -459,46 +458,161 @@ function Gallery() {
 }
 
 function Reviews() {
-  const { t } = useT();
+  const { lang, t } = useT();
+
   const reviews = [
     {
       name: "Anjali Menon",
-      text: "So gentle with my daughter. The studio is spotless and the staff knew exactly how to keep her calm.",
+      locationEn: "Thrissur",
+      locationMl: "തൃശ്ശൂർ",
+      textEn: "So gentle with my daughter. The studio is spotless and the staff knew exactly how to keep her calm.",
+      textMl: "എന്റെ മകളോട് വളരെ മൃദുവായി പെരുമാറി. സ്റ്റുഡിയോ വളരെ വൃത്തിയുള്ളതാണ്, കൂടാതെ അവളെ എങ്ങനെ ശാന്തയാക്കണമെന്ന് ജീവനക്കാർക്ക് കൃത്യമായി അറിയാമായിരുന്നു.",
       stars: 5,
     },
     {
       name: "Rahul Pillai",
-      text: "Booked online in 2 minutes. Got my son's ears pierced — quick, painless, and beautifully done.",
+      locationEn: "Ernakulam",
+      locationMl: "എറണാകുളം",
+      textEn: "Booked online in 2 minutes. Got my son's ears pierced — quick, painless, and beautifully done.",
+      textMl: "2 മിനിറ്റിനുള്ളിൽ ഓൺലൈനായി ബുക്ക് ചെയ്തു. എന്റെ മകന്റെ കാത് കുത്തിച്ചു — വേഗത്തിലും, വേദനയില്ലാതെയും, മനോഹരമായും ചെയ്തു.",
       stars: 5,
     },
     {
       name: "Lakshmi Nair",
-      text: "Trusted by our whole family. Hygiene and care here are unmatched in Kerala.",
+      locationEn: "Kozhikode",
+      locationMl: "കോഴിക്കോട്",
+      textEn: "Trusted by our whole family. Hygiene and care here are unmatched in Kerala.",
+      textMl: "ഞങ്ങളുടെ കുടുംബം മുഴുവൻ വിശ്വസിക്കുന്നു. ശുചിത്വവും പരിചരണവും കേരളത്തിൽ മറ്റെവിടെയും ലഭിക്കാത്തതാണ്.",
+      stars: 5,
+    },
+    {
+      name: "Divya Krishnan",
+      locationEn: "Palakkad",
+      locationMl: "പാലക്കാട്",
+      textEn: "My baby didn't even cry! The artist was so experienced and caring. Highly recommended.",
+      textMl: "എന്റെ കുഞ്ഞ് കരഞ്ഞതേയില്ല! ആർട്ടിസ്റ്റ് വളരെ പരിചയസമ്പന്നനും കരുതലുള്ളവനുമായിരുന്നു. ശക്തമായി ശുപാർശ ചെയ്യുന്നു.",
+      stars: 5,
+    },
+    {
+      name: "Sreeja Thomas",
+      locationEn: "Kottayam",
+      locationMl: "കോട്ടയം",
+      textEn: "Online booking was super easy. Clean studio, friendly staff, and my baby's ears look adorable!",
+      textMl: "ഓൺലൈൻ ബുക്കിംഗ് വളരെ എളുപ്പമായിരുന്നു. വൃത്തിയുള്ള സ്റ്റുഡിയോ, സൗഹൃദപരമായ ജീവനക്കാർ, എന്റെ കുഞ്ഞിന്റെ കാതുകൾ കാണാൻ നല്ല ഭംഗിയുണ്ട്!",
+      stars: 5,
+    },
+    {
+      name: "Priya Suresh",
+      locationEn: "Kannur",
+      locationMl: "കണ്ണൂർ",
+      textEn: "We came from 3 hours away and it was absolutely worth it. Professional, hygienic, and loving.",
+      textMl: "ഞങ്ങൾ 3 മണിക്കൂർ ദൂരെ നിന്നാണ് വന്നത്, അത് തികച്ചും സഫലമായി. പ്രൊഫഷണൽ, ശുചിത്വമുള്ള, സ്നേഹനിർഭരമായ സേവനം.",
+      stars: 5,
+    },
+    {
+      name: "Meera Gopinath",
+      locationEn: "Alappuzha",
+      locationMl: "ആലപ്പുഴ",
+      textEn: "The gold studs they use are of amazing quality. My baby's ears healed perfectly with zero issues.",
+      textMl: "അവർ ഉപയോഗിക്കുന്ന കാതുകുത്ത് സ്റ്റഡുകൾ മികച്ച ഗുണനിലവാരമുള്ളതാണ്. എന്റെ കുഞ്ഞിന്റെ കാതുകൾ യാതൊരു പ്രശ്നവുമില്ലാതെ തികച്ചും സുഖപ്പെട്ടു.",
+      stars: 5,
+    },
+    {
+      name: "Rini Varghese",
+      locationEn: "Thrissur",
+      locationMl: "തൃശ്ശൂർ",
+      textEn: "WhatsApp confirmation was instant. The whole process from booking to piercing was seamless.",
+      textMl: "വാട്ട്‌സ്ആപ്പ് സ്ഥിരീകരണം ഉടനടി ലഭിച്ചു. ബുക്കിംഗ് മുതൽ പിയേഴ്സിംഗ് വരെയുള്ള മുഴുവൻ പ്രക്രിയയും വളരെ എളുപ്പമായിരുന്നു.",
       stars: 5,
     },
   ];
+
+  // Row 1 = first 4, Row 2 = last 4 (doubled for seamless loop)
+  const row1 = [...reviews.slice(0, 4), ...reviews.slice(0, 4)];
+  const row2 = [...reviews.slice(4),    ...reviews.slice(4)];
+
+  const ReviewCard = ({ r }: { r: typeof reviews[0] }) => (
+    <div className="w-72 shrink-0 rounded-2xl bg-card p-5 shadow-[var(--shadow-card)] border border-border/40">
+      {/* Stars */}
+      <div className="flex gap-0.5">
+        {Array.from({ length: r.stars }).map((_, i) => (
+          <Star key={i} className="h-3.5 w-3.5 fill-primary text-primary" />
+        ))}
+      </div>
+      {/* Text */}
+      <p className="mt-3 text-sm leading-relaxed text-foreground/75">
+        "{lang === "ml" ? r.textMl : r.textEn}"
+      </p>
+      {/* Author */}
+      <div className="mt-4 flex items-center gap-2.5">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-rose-soft text-sm font-bold text-primary">
+          {r.name[0]}
+        </div>
+        <div>
+          <div className="text-sm font-semibold">{r.name}</div>
+          <div className="text-xs text-muted-foreground">
+            {lang === "ml" ? r.locationMl : r.locationEn}, {lang === "ml" ? "കേരളം" : "Kerala"}
+          </div>
+        </div>
+        {/* Instagram badge */}
+        <div className="ml-auto grid h-7 w-7 place-items-center rounded-full bg-white shadow-sm text-pink-600">
+          <Instagram className="h-4 w-4" />
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <section id="reviews" className="py-16 sm:py-20">
+    <section id="reviews" className="py-16 sm:py-20 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4">
         <SectionHeading>{t("parentReviews")}</SectionHeading>
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {reviews.map((r) => (
-            <div key={r.name} className="rounded-2xl bg-card p-6 shadow-[var(--shadow-card)]">
-              <div className="flex gap-1 text-primary">
-                {Array.from({ length: r.stars }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-primary" />
-                ))}
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/80">"{r.text}"</p>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-rose-soft text-sm font-semibold text-primary">
-                  {r.name[0]}
-                </div>
-                <div className="text-sm font-medium">{r.name}</div>
-              </div>
-            </div>
-          ))}
+      </div>
+
+      {/* Row 1 — scrolls left */}
+      <div
+        className="mt-10 flex gap-4"
+        onMouseEnter={(e) => {
+          const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r1");
+          if (el) el.style.animationPlayState = "paused";
+        }}
+        onMouseLeave={(e) => {
+          const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r1");
+          if (el) el.style.animationPlayState = "running";
+        }}
+      >
+        <div className="marquee-r1 flex shrink-0 gap-4 animate-marquee">
+          {row1.map((r, i) => <ReviewCard key={i} r={r} />)}
         </div>
+      </div>
+
+      {/* Row 2 — scrolls right */}
+      <div
+        className="mt-4 flex gap-4"
+        onMouseEnter={(e) => {
+          const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r2");
+          if (el) el.style.animationPlayState = "paused";
+        }}
+        onMouseLeave={(e) => {
+          const el = e.currentTarget.querySelector<HTMLElement>(".marquee-r2");
+          if (el) el.style.animationPlayState = "running";
+        }}
+      >
+        <div className="marquee-r2 flex shrink-0 gap-4 animate-marquee-reverse">
+          {row2.map((r, i) => <ReviewCard key={i} r={r} />)}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="mt-10 text-center">
+        <a
+          href="https://www.instagram.com/piercings_by_tattoo_kid?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-6 py-2.5 text-sm font-medium shadow-sm hover:bg-rose-soft transition-colors text-pink-600 hover:text-pink-700"
+        >
+          <Instagram className="h-4 w-4 shrink-0 text-pink-600" />
+          {t("followInstagram")}
+        </a>
       </div>
     </section>
   );

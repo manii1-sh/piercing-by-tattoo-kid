@@ -43,10 +43,10 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const nav = [
     { id: "home", label: t("home"), to: "/", hash: "home" },
+    { id: "how", label: t("howItWorks"), to: "/how-it-works" },
     { id: "services", label: t("services"), to: "/services" },
     { id: "guide", label: t("piercingGuide"), to: "/piercing-guide" },
     { id: "gallery", label: t("gallery"), to: "/gallery" },
-    { id: "how", label: t("howItWorks"), to: "/how-it-works" },
     { id: "reviews", label: t("reviews"), to: "/reviews" },
     { id: "contact", label: t("contact"), to: "/contact" },
   ];
