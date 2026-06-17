@@ -9,7 +9,7 @@ export function IntroVideoPopup() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("intro_seen")) {
+    if (!sessionStorage.getItem("intro_seen")) {
       setIsOpen(true);
     }
   }, []);
@@ -64,7 +64,7 @@ export function IntroVideoPopup() {
   };
 
   const handleClose = () => {
-    localStorage.setItem("intro_seen", "1");
+    sessionStorage.setItem("intro_seen", "1");
     setIsOpen(false);
   };
 
