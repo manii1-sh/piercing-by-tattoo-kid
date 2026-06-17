@@ -1,6 +1,6 @@
 import { useT } from "@/lib/i18n";
 import { Link } from "@tanstack/react-router";
-import { Calendar, MapPin, Phone, ShieldCheck, Menu, X, QrCode } from "lucide-react";
+import { Calendar, MapPin, Phone, ShieldCheck, Menu, X, QrCode, Play } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -79,6 +79,16 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Watch video button */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("show-intro-video"))}
+            className="flex h-11 items-center gap-2 rounded-full border border-border bg-card px-4 text-xs font-semibold text-primary transition-all hover:bg-rose-soft/30 cursor-pointer shadow-sm active:scale-95"
+            title="Watch Safety Video"
+          >
+            <Play className="h-3.5 w-3.5 fill-primary" />
+            <span className="hidden sm:inline">{t("watchVideo")}</span>
+          </button>
+
           <div className="hidden items-center rounded-full border border-border bg-card p-0.5 text-xs font-medium sm:flex">
             <button
               onClick={() => setLang("en")}
@@ -125,6 +135,16 @@ export function Header() {
                 {n.label}
               </Link>
             ))}
+            <button
+              onClick={() => {
+                setOpen(false);
+                window.dispatchEvent(new CustomEvent("show-intro-video"));
+              }}
+              className="flex items-center gap-2 rounded-lg px-3 py-3 text-base text-primary font-semibold hover:bg-rose-soft cursor-pointer text-left w-full"
+            >
+              <Play className="h-4 w-4 fill-primary" />
+              {t("watchVideo")}
+            </button>
             <div className="mt-2 flex items-center gap-2">
               <button
                 onClick={() => setLang("en")}

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Square, Volume2, VolumeX, Check, SkipForward } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import babyVideo from "@/assets/piercing 3.mp4";
+import babyVideoMl from "@/assets/awarenessvideomalayam.mp4";
+import babyVideoEn from "@/assets/awarnessvideoenglish.mp4";
 
 export function IntroVideoPopup() {
   const { t, lang, setLang } = useT();
@@ -13,24 +14,35 @@ export function IntroVideoPopup() {
       setIsOpen(true);
     }
   }, []);
+
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Auto-play attempt on mount
+  // Listen for global custom event to open the video popup manually
   useEffect(() => {
-    if (videoRef.current) {
+    const handleShowVideo = () => setIsOpen(true);
+    window.addEventListener("show-intro-video", handleShowVideo);
+    return () => window.removeEventListener("show-intro-video", handleShowVideo);
+  }, []);
+
+  const videoSrc = lang === "ml" ? babyVideoMl : babyVideoEn;
+
+  // Auto-play or load attempt when isOpen or lang changes
+  useEffect(() => {
+    if (isOpen && videoRef.current) {
+      videoRef.current.load();
       videoRef.current
         .play()
         .then(() => {
           setIsPlaying(true);
         })
         .catch((err) => {
-          console.log("Autoplay prevented:", err);
+          console.log("Autoplay/play failed:", err);
           setIsPlaying(false);
         });
     }
-  }, []);
+  }, [isOpen, lang]);
 
   if (!isOpen) return null;
 
@@ -108,7 +120,7 @@ export function IntroVideoPopup() {
         <div className="relative mt-5 aspect-[4/5] w-full overflow-hidden rounded-[28px] bg-black shadow-lg">
           <video
             ref={videoRef}
-            src={babyVideo}
+            src={videoSrc}
             className="h-full w-full object-cover"
             autoPlay
             muted={isMuted}

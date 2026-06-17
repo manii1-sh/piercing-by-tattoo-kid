@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/lib/i18n";
 import { Header } from "@/components/site/Header";
-import { IntroVideoPopup } from "@/components/site/IntroVideoPopup";
 import { BookingSection } from "@/components/site/BookingSection";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { Button } from "@/components/ui/button";
@@ -30,6 +29,7 @@ import {
   MessageCircle,
   Star,
   ChevronRight,
+  Play,
 } from "lucide-react";
 import amala from "@/assets/AMALA-removebg-preview.webp";
 import baby1 from "@/assets/ChatGPT Image Jun 16, 2026, 12_53_53 PM.webp";
@@ -87,7 +87,6 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <IntroVideoPopup />
       <Header />
       <main>
         <Hero />
@@ -153,7 +152,7 @@ function Hero() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Button
               asChild
-              className="h-12 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-md hover:bg-primary/90"
+              className="h-12 rounded-full bg-primary px-6 text-sm font-semibold text-white shadow-md hover:bg-primary/90 cursor-pointer"
             >
               <a href="#book">
                 <Calendar className="mr-2 h-4 w-4" />
@@ -163,9 +162,17 @@ function Hero() {
             <Button
               asChild
               variant="outline"
-              className="h-12 rounded-full border-2 border-border/60 bg-white/80 px-6 text-sm font-semibold hover:bg-white"
+              className="h-12 rounded-full border-2 border-border/60 bg-white/80 px-6 text-sm font-semibold hover:bg-white cursor-pointer"
             >
               <a href="#services">{t("ourServices")}</a>
+            </Button>
+            <Button
+              onClick={() => window.dispatchEvent(new CustomEvent("show-intro-video"))}
+              variant="outline"
+              className="h-12 rounded-full border-2 border-primary/20 bg-primary/5 px-6 text-sm font-semibold text-primary hover:bg-primary/10 cursor-pointer"
+            >
+              <Play className="mr-2 h-4 w-4 fill-primary" />
+              {t("watchSafetyVideo")}
             </Button>
           </div>
 

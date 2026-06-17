@@ -25,6 +25,8 @@ const en: Dict = {
   skipContinue: "Skip & Continue",
   mutedLabel: "Muted",
   playingLabel: "Playing",
+  watchVideo: "Watch Video",
+  watchSafetyVideo: "Watch Safety Video",
   // hero
   safeForLittleOnes: "SAFE FOR YOUR LITTLE ONES",
   heroTitle1: "Tiny Moments,",
@@ -166,6 +168,8 @@ const ml: Dict = {
   skipContinue: "സ്കിപ്പ് ചെയ്യുക & തുടരുക",
   mutedLabel: "മ്യൂട്ട് ചെയ്തു",
   playingLabel: "പ്ലേ ചെയ്യുന്നു",
+  watchVideo: "വീഡിയോ കാണുക",
+  watchSafetyVideo: "സുരക്ഷാ വീഡിയോ കാണുക",
   // hero
   safeForLittleOnes: "നിങ്ങളുടെ കുഞ്ഞുങ്ങൾക്ക് സുരക്ഷിതം",
   heroTitle1: "ചെറിയ നിമിഷങ്ങൾ,",
